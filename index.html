@@ -81,6 +81,56 @@ th:first-child,td:first-child{text-align:left}
 thead th{color:var(--muted);font-weight:500;font-size:.82rem}
 .limits li{margin:4px 0}
 footer{margin-top:40px;color:var(--muted);font-size:.85rem}
+/* ---- top nav ---- */
+.topnav{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.topnav a{font-size:.9rem;padding:6px 14px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--ink);text-decoration:none}
+.topnav a:hover{border-color:var(--leaf)}
+.topnav a.primary{background:var(--leaf);border-color:var(--leaf);color:#fff}
+/* ---- results ---- */
+#results{scroll-margin-top:16px}
+:root{--s-a:#2a78d6;--s-b2:#eb6834;--s-b1:#1baf7a}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--s-a:#3987e5;--s-b2:#d95926;--s-b1:#199e70}}
+:root[data-theme="dark"]{--s-a:#3987e5;--s-b2:#d95926;--s-b1:#199e70}
+.res-intro{margin:0 0 14px;color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 18px}
+.chip{font-size:.8rem;padding:3px 10px;border-radius:999px;background:var(--card);border:1px solid var(--line);color:var(--muted)}
+.keygrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
+.key .lbl{font-size:.8rem;font-weight:700;color:var(--leaf)}
+.key .big{font-size:1.7rem;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums;margin:4px 0 2px}
+.key .big small{font-size:.95rem;color:var(--muted);font-weight:500}
+.key p{margin:6px 0 0;font-size:.92rem}
+h3.sub{font-size:1.1rem;margin:30px 0 4px}
+.lead{margin:0 0 12px;color:var(--muted);font-size:.95rem}
+.mapgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+@media (max-width:520px){.mapgrid{grid-template-columns:1fr 1fr}}
+.mini{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px}
+.mini canvas{width:100%;aspect-ratio:1/1;display:block;border-radius:8px;background:#fff}
+.mini .t{font-weight:700;font-size:.92rem;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.mini .m{font-size:.82rem;color:var(--muted);margin-top:6px;font-variant-numeric:tabular-nums;line-height:1.45}
+.mini .m b{color:var(--ink)}
+.angles{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:10px}
+.angles .mini{padding:7px}
+.angles .mini .t{font-size:.85rem;margin-bottom:4px}
+.angles .mini .m{font-size:.76rem;margin-top:4px}
+.angles .mini.best{border-color:var(--s-b2);border-width:2px}
+.swatch{display:inline-block;width:14px;height:3px;border-radius:2px;vertical-align:middle;margin-right:5px}
+.swatch.dash{background:repeating-linear-gradient(90deg,currentColor 0 4px,transparent 4px 7px)!important;height:2px}
+.vlegend{display:flex;gap:14px;flex-wrap:wrap;font-size:.85rem;color:var(--ink);margin:0 0 6px}
+.charts2{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px}
+.chartbox{position:relative}
+.chartbox h4{margin:0 0 4px;font-size:.95rem}
+.chartbox svg{width:100%;height:auto;display:block;touch-action:pan-y}
+.tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--bg);font-size:.8rem;line-height:1.45;padding:7px 9px;border-radius:8px;white-space:nowrap;opacity:0;transition:opacity .12s;z-index:2;font-variant-numeric:tabular-nums}
+.tip i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;vertical-align:middle}
+.finding{background:var(--leaf-soft);border-radius:12px;padding:12px 14px;margin-top:12px;font-size:.93rem}
+.finding ul{margin:4px 0 0;padding-left:20px}
+.finding li{margin:3px 0}
+details.tbl{margin-top:12px}
+details.tbl summary{cursor:pointer;color:var(--leaf);font-weight:500;font-size:.9rem}
+details.tbl .scroll{overflow-x:auto;margin-top:8px}
+.hl td{font-weight:700}
+.quote{border-left:0;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:10px 0 0}
+.src{font-size:.8rem;color:var(--muted);margin-top:10px}
 </style>
 </head>
 <body>
@@ -88,6 +138,11 @@ footer{margin-top:40px;color:var(--muted);font-size:.85rem}
 <header>
   <h1>OrganoLeaf 통로 설계 시뮬레이터</h1>
   <p>직선형 통로와 잎맥처럼 갈라지는 통로를 같은 조건에서 비교합니다. 조직 안의 각 지점이 가장 가까운 통로에서 얼마나 떨어져 있는지 계산합니다.</p>
+  <nav class="topnav" aria-label="페이지 이동">
+    <a href="#sim">시뮬레이터</a>
+    <a href="#draw">직접 그리기</a>
+    <a class="primary" href="#results">우리 팀 분석 결과</a>
+  </nav>
 </header>
 
 <div class="question">
@@ -95,7 +150,7 @@ footer{margin-top:40px;color:var(--muted);font-size:.85rem}
   직선형 통로와 잎맥형 분기 통로 중 어떤 구조가 조직 내부의 각 지점과 통로 사이의 거리를 더 짧게 만들까? 통로 간격에 따라 결과는 어떻게 달라질까?
 </div>
 
-<h2>1. 조건 설정</h2>
+<h2 id="sim">1. 조건 설정</h2>
 <div class="card">
   <div class="controls">
     <div class="ctl">
@@ -162,7 +217,7 @@ footer{margin-top:40px;color:var(--muted);font-size:.85rem}
   <div style="margin-top:14px;overflow-x:auto"><table id="sweepTable"></table></div>
 </div>
 
-<h2>4. 체험: 직접 통로 설계하기</h2>
+<h2 id="draw">4. 체험: 직접 통로 설계하기</h2>
 <div class="card">
   <div class="draw-grid">
     <div>
@@ -183,7 +238,92 @@ footer{margin-top:40px;color:var(--muted);font-size:.85rem}
   </div>
 </div>
 
-<h2>5. 이 시뮬레이션의 가정과 한계</h2>
+<h2 id="results">5. 우리 팀 분석 결과</h2>
+<p class="res-intro">시뮬레이터로 분기 단계, 통로 개수, 분기 각도를 하나씩 바꿔 가며 기록한 결과입니다. 바꾼 조건 하나 외에는 모두 같게 두었습니다.</p>
+<div class="chips">
+  <span class="chip">조직 2 mm × 2 mm</span><span class="chip">통로 굵기 20 μm</span><span class="chip">기준 거리 100 μm</span>
+  <span class="chip">두 구조 통로 총 길이 같게</span><span class="chip">직선형은 통로마다 입구</span>
+</div>
+
+<div class="keygrid">
+  <div class="card key">
+    <div class="lbl">① 분기 단계</div>
+    <div class="big">322 → 535 <small>μm</small></div>
+    <div class="note">최대 거리 (분기 각도 90°, 총 길이 8 mm)</div>
+    <p>세맥을 추가한 2단이 1단보다 <b>오히려 멀었습니다.</b> 세맥에 길이를 쓰는 만큼 측맥 수가 줄었기 때문입니다.</p>
+  </div>
+  <div class="card key">
+    <div class="lbl">② 통로 개수</div>
+    <div class="big">245 → 45 <small>μm</small></div>
+    <div class="note">직선형 평균 거리 (총 길이 4 → 20 mm)</div>
+    <p>통로가 많을수록 두 구조 모두 가까워졌습니다. 직선형은 <b>최대 거리 ≈ 간격 ÷ 2</b> 규칙을 따랐습니다.</p>
+  </div>
+  <div class="card key">
+    <div class="lbl">③ 분기 각도</div>
+    <div class="big">975 → 535 <small>μm</small></div>
+    <div class="note">잎맥형(2단) 최대 거리 (30° → 90°, 총 길이 8 mm)</div>
+    <p>측맥이 주맥에 <b>수직(90°)에 가까울수록</b> 가장 먼 곳까지의 거리가 줄었습니다.</p>
+  </div>
+</div>
+
+<h3 class="sub">① 분기 단계: 1단과 2단 비교</h3>
+<p class="lead">총 길이 8 mm(직선형 4개 분량), 분기 각도 90°에서 세 구조의 거리 색상 지도입니다. 붉을수록 통로에서 먼 곳입니다.</p>
+<div class="mapgrid" id="levelMaps"></div>
+<details class="tbl" open><summary>분기 각도별 1단·2단 비교표</summary><div class="scroll"><table id="levelTable"></table></div></details>
+<div class="finding"><b>알게 된 점</b><ul>
+  <li>세 각도(50°·70°·90°) 모두에서 1단이 2단보다 평균 거리와 최대 거리가 짧았습니다.</li>
+  <li>총 길이가 같으면 세맥에 쓴 길이만큼 측맥이 줄어듭니다(90°: 3쌍 → 2쌍). 세맥은 측맥 바로 옆에 몰려 이미 가까운 곳을 다시 덮습니다.</li>
+  <li>거리만 보면 <b>가지를 많이 치는 것보다 통로를 고르게 퍼뜨리는 것</b>이 더 중요했습니다.</li>
+</ul></div>
+
+<h3 class="sub">② 통로 개수: 총 길이를 늘리면?</h3>
+<p class="lead">직선형 통로를 2개에서 10개로 늘리고, 잎맥형도 같은 총 길이로 맞춰 비교했습니다(분기 각도 90°).</p>
+<div class="vlegend">
+  <span><i class="swatch" style="background:var(--s-a)"></i>A 직선형</span>
+  <span><i class="swatch" style="background:var(--s-b1)"></i>B 잎맥형 1단</span>
+  <span><i class="swatch" style="background:var(--s-b2)"></i>B 잎맥형 2단</span>
+</div>
+<div class="charts2">
+  <div class="card chartbox"><h4>평균 거리</h4><svg id="cMean" viewBox="0 0 520 300" role="img" aria-label="통로 총 길이에 따른 평균 거리"></svg><div class="tip"></div></div>
+  <div class="card chartbox"><h4>최대 거리 (가장 먼 곳)</h4><svg id="cMax" viewBox="0 0 520 300" role="img" aria-label="통로 총 길이에 따른 최대 거리"></svg><div class="tip"></div></div>
+</div>
+<details class="tbl"><summary>통로 개수별 결과표</summary><div class="scroll"><table id="countTable"></table></div></details>
+<div class="finding"><b>알게 된 점</b><ul>
+  <li>통로가 많아질수록 세 구조 모두 거리가 줄었습니다. 직선형 평균 거리는 245 μm에서 45 μm로 줄었습니다.</li>
+  <li>직선형의 최대 거리는 <b>간격 ÷ 2</b>와 거의 같았습니다(간격 500 μm → 235 μm, 200 μm → 85 μm). 그래서 간격이 200 μm(기준 거리의 2배) 이하가 되면 모든 지점이 100 μm 이내에 들었습니다.</li>
+  <li>잎맥형 1단은 통로가 많아질수록 직선형에 가까워졌습니다(20 mm에서 평균 49 μm 대 45 μm).</li>
+  <li>잎맥형 2단은 측맥 수가 3쌍에서 4쌍으로 바뀌는 16 → 18 mm에서 <b>오히려 멀어졌습니다</b>(평균 72 → 76 μm). 같은 길이를 4쌍에 나누느라 측맥 하나하나가 짧아졌기 때문입니다.</li>
+  <li>필요한 입구 수는 직선형이 통로 수만큼(2~10개), 잎맥형은 언제나 1개였습니다.</li>
+</ul></div>
+
+<h3 class="sub">③ 분기 각도: 측맥이 갈라지는 각도</h3>
+<p class="lead">잎맥형 2단, 총 길이 8 mm에서 분기 각도를 30°부터 90°까지 5°씩 바꾼 결과입니다. 굵은 테두리는 가장 먼 곳까지의 거리가 가장 짧았던 각도입니다.</p>
+<div class="angles" id="angleMaps"></div>
+<div class="card chartbox" style="margin-top:14px">
+  <h4>분기 각도에 따른 거리 (잎맥형 2단)</h4>
+  <div class="vlegend" style="margin-top:4px">
+    <span style="color:var(--s-b2)"><i class="swatch" style="background:var(--s-b2)"></i><span style="color:var(--ink)">잎맥형 평균</span></span>
+    <span style="color:var(--s-b2)"><i class="swatch dash"></i><span style="color:var(--ink)">잎맥형 최대</span></span>
+    <span style="color:var(--s-a)"><i class="swatch dash"></i><span style="color:var(--ink)">A 직선형 기준선(평균 120 · 최대 235 μm)</span></span>
+  </div>
+  <svg id="cAngle" viewBox="0 0 760 320" role="img" aria-label="분기 각도에 따른 평균 거리와 최대 거리"></svg><div class="tip"></div>
+</div>
+<details class="tbl"><summary>분기 각도별 결과표</summary><div class="scroll"><table id="angleTable"></table></div></details>
+<div class="finding"><b>알게 된 점</b><ul>
+  <li>각도가 커질수록 최대 거리가 줄었습니다. 30°에서 975 μm였던 최대 거리가 90°에서 535 μm가 되었습니다.</li>
+  <li>각도가 작으면 측맥이 주맥 쪽으로 눕습니다. 그래서 주맥이 이미 덮은 곳을 다시 덮고, 위아래 가장자리까지 닿으려면 더 긴 통로가 필요합니다.</li>
+  <li>50° → 55°에서 측맥이 1쌍에서 2쌍으로 바뀌면서 최대 거리가 크게 줄었습니다(811 → 658 μm). 대신 평균 거리는 잠깐 늘었습니다(198 → 209 μm).</li>
+  <li>기준 100 μm 이내 비율은 모든 각도에서 33~37%로 비슷했습니다. 분기 각도는 통로 가까운 곳보다 <b>가장 먼 곳</b>에 큰 영향을 주었습니다.</li>
+  <li>가장 좋았던 90°도 직선형보다는 멀었습니다(최대 535 μm 대 235 μm).</li>
+</ul></div>
+
+<h3 class="sub">종합 결론</h3>
+<div class="quote">
+  통로 총 길이를 같게 했을 때, 조직 내부와 통로 사이의 거리는 직선형 통로가 가장 짧았다. 잎맥형 통로는 측맥이 주맥에 수직에 가깝고(90°), 세맥 없이 측맥을 고르게 배치할 때(1단) 직선형에 가장 가까워졌으며, 통로가 많아질수록 그 차이는 줄었다. 반면 잎맥형은 통로 양과 관계없이 입구 하나로 전체를 연결할 수 있었다. 따라서 잎맥형 통로의 장점은 거리보다 <b>하나의 입구로 배양액을 고르게 보낼 수 있는 연결 구조</b>에 있다고 볼 수 있으며, 실제 흐름과 산소 공급에서의 효과는 후속 탐구로 확인해야 한다.
+</div>
+<p class="src">자료: 시뮬레이터 화면 기록(2026. 10. 29.). 위 지도는 같은 계산식으로 다시 그린 것이며 수치는 기록과 같습니다. 1단의 50°·70° 결과와 통로 개수별 1단 결과는 같은 시뮬레이터로 추가 계산했습니다.</p>
+
+<h2>6. 이 시뮬레이션의 가정과 한계</h2>
 <div class="card">
   <ul class="limits">
     <li>조직은 <b>2 mm × 2 mm</b> 정사각형 단면(2차원)으로 가정했고, 1칸 = 10 μm 격자로 계산합니다. 통로 굵기는 20 μm로 가정했습니다.</li>
@@ -341,8 +481,12 @@ function colorFor(d, thr) { return d <= thr ? ramp(STOPS_IN, d / thr) : ramp(STO
 function cssVar(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
 
 // ---------------- rendering ----------------
-const off = document.createElement("canvas"); off.width = N; off.height = N;
-const offCtx = off.getContext("2d");
+// one offscreen buffer per map: Safari defers drawImage from a shared canvas, which swapped the maps
+const offs = new Map();
+function offFor(cv) {
+  if (!offs.has(cv)) { const o = document.createElement("canvas"); o.width = N; o.height = N; offs.set(cv, o); }
+  return offs.get(cv);
+}
 function sizeCanvas(cv) {
   const dpr = window.devicePixelRatio || 1, w = Math.round(cv.clientWidth * dpr);
   if (cv.width !== w) { cv.width = w; cv.height = w; }
@@ -350,10 +494,11 @@ function sizeCanvas(cv) {
 }
 function render(cv, res, segs, color, opts = {}) {
   const k = sizeCanvas(cv), ctx = cv.getContext("2d");
+  const off = offFor(cv), offCtx = off.getContext("2d");
   const img = offCtx.createImageData(N, N);
   for (let i = 0; i < N * N; i++) {
     const d = res ? res.dist[i] : Infinity;
-    const col = !res || res.empty ? [247, 247, 244] : d < 0 ? [255, 255, 255] : colorFor(d, state.thr);
+    const col = !res || res.empty ? [247, 247, 244] : d < 0 ? [255, 255, 255] : colorFor(d, opts.thr || state.thr);
     img.data[i * 4] = col[0]; img.data[i * 4 + 1] = col[1]; img.data[i * 4 + 2] = col[2]; img.data[i * 4 + 3] = 255;
   }
   offCtx.putImageData(img, 0, 0);
@@ -366,6 +511,14 @@ function render(cv, res, segs, color, opts = {}) {
     const a = Math.max(5, 45 * k);
     ctx.fillStyle = color;
     opts.inlets.forEach(y => { ctx.beginPath(); ctx.moveTo(0, y * k - a); ctx.lineTo(a * 1.3, y * k); ctx.lineTo(0, y * k + a); ctx.closePath(); ctx.fill(); });
+  }
+  if (opts.mini) {                           // small map: farthest point only
+    if (res && !res.empty && res.max > 0) {
+      const [fx, fy] = res.far, r = Math.max(4, 45 * k);
+      ctx.fillStyle = "#fff"; ctx.strokeStyle = "#111"; ctx.lineWidth = Math.max(1.5, 8 * k);
+      ctx.beginPath(); ctx.arc(fx * k, fy * k, r, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+    }
+    return;
   }
   if (res && !res.empty && res.max > 0) {   // farthest point + label
     const [fx, fy] = res.far, X = fx * k, Y = fy * k, r = Math.max(6, 35 * k);
@@ -558,10 +711,133 @@ document.querySelectorAll("[data-level]").forEach(b => b.addEventListener("click
   document.querySelectorAll("[data-level]").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
   schedule();
 }));
-let rz; window.addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(() => { updateCompare(); }, 150); });
-window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => { updateCompare(); drawChart(); });
+let rz; window.addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(() => { updateCompare(); if (document.getElementById("cAngle").innerHTML) drawResultCharts(); }, 150); });
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => { updateCompare(); drawChart(); buildResults(); });
+
+
+// ================= results section (recorded data) =================
+const RES_THR = 100;
+const R_A4 = { mean: 120, max: 235, cover: 41.7 };
+// [angle, levels, pairs, mean, max, cover%, timeRatio]
+const R_LEVEL = [[50,1,3,148,635,38.8,7.30],[70,1,3,140,478,39.6,4.14],[90,1,3,144,322,37.9,1.87],
+                 [50,2,1,198,811,37.3,11.92],[70,2,2,189,580,34.6,6.10],[90,2,2,179,535,34.8,5.19]];
+// [n, A mean, A max, A cover, B1 pairs, B1 mean, B1 max, B1 cover, B2 pairs, B2 mean, B2 max, B2 cover]
+const R_COUNT = [[2,245,485,20.4,1,330,985,19.2,1,371,985,17.1],[3,162,322,30.9,2,205,485,28.4,1,249,792,27.9],
+  [4,120,235,41.7,3,144,322,37.9,2,179,535,34.8],[5,95,185,52.6,4,110,235,47.6,2,120,356,46.5],
+  [6,78,155,63.8,5,89,185,57.4,2,100,315,56.1],[7,66,132,75.3,6,74,155,67.5,3,86,266,65.4],
+  [8,60,110,90.9,7,63,132,77.8,3,72,245,73.4],[9,51,101,98.9,8,56,110,90.2,4,76,261,71.8],
+  [10,45,85,100.0,9,49,101,99.0,4,63,210,79.4]];
+// [angle, pairs, mean, max, cover%, timeRatio]  (2단, 총 길이 8 mm)
+const R_ANGLE = [[30,1,235,975,34.4,17.22],[35,1,222,934,36.0,15.78],[40,1,213,895,36.9,14.50],[45,1,204,853,37.4,13.18],
+  [50,1,198,811,37.3,11.92],[55,2,209,658,33.3,7.84],[60,2,201,629,34.0,7.16],[65,2,194,603,34.3,6.58],
+  [70,2,189,580,34.6,6.10],[75,2,185,562,34.6,5.72],[80,2,182,548,34.6,5.44],[85,2,180,539,34.7,5.26],[90,2,179,535,34.8,5.19]];
+
+function leafFor(n, angle, levels) {
+  const target = totalLen(straightSegs(n, false));
+  return leafSegs(n, angle, levels, true, target);
+}
+function miniCard(parent, title, segs, color, metaHTML, extraClass = "") {
+  const box = document.createElement("div"); box.className = "mini " + extraClass;
+  box.innerHTML = `<div class="t">${title}</div><canvas></canvas><div class="m">${metaHTML}</div>`;
+  parent.appendChild(box);
+  const cv = box.querySelector("canvas");
+  return () => { const r = evaluate(segs, RES_THR); render(cv, r, segs, color, { thr: RES_THR, mini: true }); };
+}
+const miniJobs = [];
+function buildResults() {
+  const cA = cssVar("--s-a"), cB1 = cssVar("--s-b1"), cB2 = cssVar("--s-b2");
+  // ① levels maps
+  const lm = document.getElementById("levelMaps"); lm.innerHTML = "";
+  const l1 = R_LEVEL.find(r => r[0] === 90 && r[1] === 1), l2 = R_LEVEL.find(r => r[0] === 90 && r[1] === 2);
+  const meta = (mean, max, cover, extra) => `평균 <b>${mean}</b> · 최대 <b>${max}</b> μm<br>100 μm 이내 ${cover}%${extra ? " · " + extra : ""}`;
+  miniJobs.push(miniCard(lm, `<i class="swatch" style="background:${cA}"></i>A 직선형 (4개)`, straightSegs(4, false), cA, meta(R_A4.mean, R_A4.max, R_A4.cover, "입구 4개")));
+  miniJobs.push(miniCard(lm, `<i class="swatch" style="background:${cB1}"></i>B 1단 (측맥 3쌍)`, leafFor(4, 90, 1).segs, cB1, meta(l1[3], l1[4], l1[5], "입구 1개")));
+  miniJobs.push(miniCard(lm, `<i class="swatch" style="background:${cB2}"></i>B 2단 (측맥 2쌍+세맥)`, leafFor(4, 90, 2).segs, cB2, meta(l2[3], l2[4], l2[5], "입구 1개")));
+  document.getElementById("levelTable").innerHTML = `<thead><tr><th>분기 각도</th><th>분기 단계</th><th>측맥</th><th>평균(μm)</th><th>최대(μm)</th><th>100 μm 이내</th><th>확산 시간(A 대비)</th></tr></thead><tbody>
+    <tr><td>직선형 A</td><td>—</td><td>통로 4개</td><td>120</td><td>235</td><td>41.7%</td><td>1.00</td></tr>` +
+    [50, 70, 90].flatMap(a => [1, 2].map(lv => R_LEVEL.find(r => r[0] === a && r[1] === lv))).map(r =>
+      `<tr><td>${r[0]}°</td><td>${r[1]}단</td><td>${r[2]}쌍</td><td>${r[3]}</td><td>${r[4]}</td><td>${r[5]}%</td><td>${r[6].toFixed(2)}배</td></tr>`).join("") + "</tbody>";
+  // ② count charts + table
+  document.getElementById("countTable").innerHTML = `<thead><tr><th>직선형 개수</th><th>총 길이</th><th>A 평균</th><th>A 최대</th><th>A 100 이내</th><th>B1 측맥</th><th>B1 평균</th><th>B1 최대</th><th>B1 100 이내</th><th>B2 측맥</th><th>B2 평균</th><th>B2 최대</th><th>B2 100 이내</th></tr></thead><tbody>` +
+    R_COUNT.map(r => `<tr${r[0] === 9 ? ' class="hl"' : ""}><td>${r[0]}개</td><td>${r[0] * 2} mm</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}%</td><td>${r[4]}쌍</td><td>${r[5]}</td><td>${r[6]}</td><td>${r[7]}%</td><td>${r[8]}쌍</td><td>${r[9]}</td><td>${r[10]}</td><td>${r[11]}%</td></tr>`).join("") +
+    `</tbody><caption style="caption-side:bottom;text-align:left;padding-top:6px" class="note">거리 단위 μm · 굵게 표시: 2단 측맥이 3쌍 → 4쌍으로 바뀌며 거리가 늘어난 구간</caption>`;
+  // ③ angle maps + chart + table
+  const am = document.getElementById("angleMaps"); am.innerHTML = "";
+  const best = Math.min(...R_ANGLE.map(r => r[3]));
+  R_ANGLE.forEach(r => miniJobs.push(miniCard(am, `${r[0]}°`, leafFor(4, r[0], 2).segs, cB2, `측맥 ${r[1]}쌍<br>평균 ${r[2]} μm<br>최대 <b>${r[3]}</b> μm`, r[3] === best ? "best" : "")));
+  document.getElementById("angleTable").innerHTML = `<thead><tr><th>분기 각도</th><th>측맥</th><th>평균(μm)</th><th>최대(μm)</th><th>100 μm 이내</th><th>확산 시간(A 대비)</th></tr></thead><tbody>` +
+    R_ANGLE.map(r => `<tr${r[3] === best ? ' class="hl"' : ""}><td>${r[0]}°</td><td>${r[1]}쌍</td><td>${r[2]}</td><td>${r[3]}</td><td>${r[4]}%</td><td>${r[5].toFixed(2)}배</td></tr>`).join("") + "</tbody>";
+  drawResultCharts();
+  runMiniJobs();
+}
+function drawResultCharts() {
+  const cA = cssVar("--s-a"), cB1 = cssVar("--s-b1"), cB2 = cssVar("--s-b2");
+  const xs = R_COUNT.map(r => r[0] * 2);
+  lineChart("cMean", { xs, xTitle: "통로 총 길이 (mm)", unit: "μm", xFmt: v => v + " mm",
+    series: [{ name: "A 직선형", color: cA, values: R_COUNT.map(r => r[1]) }, { name: "B 1단", color: cB1, values: R_COUNT.map(r => r[5]) }, { name: "B 2단", color: cB2, values: R_COUNT.map(r => r[9]) }],
+    refs: [{ y: 100, label: "기준 100 μm" }] });
+  lineChart("cMax", { xs, xTitle: "통로 총 길이 (mm)", unit: "μm", xFmt: v => v + " mm",
+    series: [{ name: "A 직선형", color: cA, values: R_COUNT.map(r => r[2]) }, { name: "B 1단", color: cB1, values: R_COUNT.map(r => r[6]) }, { name: "B 2단", color: cB2, values: R_COUNT.map(r => r[10]) }],
+    refs: [{ y: 100, label: "기준 100 μm" }] });
+  lineChart("cAngle", { xs: R_ANGLE.map(r => r[0]), xTitle: "분기 각도 (°)", unit: "μm", xFmt: v => v + "°",
+    series: [{ name: "잎맥형 평균", color: cB2, values: R_ANGLE.map(r => r[2]) }, { name: "잎맥형 최대", color: cB2, dash: "7 5", values: R_ANGLE.map(r => r[3]) }],
+    refs: [{ y: 120, label: "A 평균 120", color: cA }, { y: 235, label: "A 최대 235", color: cA }],
+    vline: { x: 52.5, label: "측맥 1쌍 → 2쌍" } });
+}
+function runMiniJobs() { // draw small maps a few at a time so the page stays responsive
+  const jobs = miniJobs.splice(0);
+  const step = () => { const t = performance.now(); while (jobs.length && performance.now() - t < 30) jobs.shift()(); if (jobs.length) requestAnimationFrame(step); };
+  requestAnimationFrame(step);
+}
+
+// generic line chart with crosshair tooltip
+function lineChart(id, cfg) {
+  const svg = document.getElementById(id), box = svg.parentElement, tip = box.querySelector(".tip");
+  const VH = cfg.h || 300, VW = Math.round(Math.max(330, Math.min(900, svg.clientWidth || 520)));
+  svg.setAttribute("viewBox", `0 0 ${VW} ${VH}`);
+  const muted = cssVar("--muted"), line = cssVar("--line"), ink = cssVar("--ink"), card = cssVar("--card");
+  const m = { l: 46, r: VW < 420 ? 92 : 112, t: 14, b: 44 }, w = VW - m.l - m.r, h = VH - m.t - m.b;
+  const xs = cfg.xs, xmin = Math.min(...xs), xmax = Math.max(...xs);
+  const allY = cfg.series.flatMap(s => s.values).concat((cfg.refs || []).map(r => r.y));
+  const step = 200, ymax = Math.ceil(Math.max(...allY) / step) * step;
+  const X = v => m.l + (v - xmin) / (xmax - xmin) * w, Y = v => m.t + h - v / ymax * h;
+  let s = "";
+  for (let v = 0; v <= ymax; v += step) s += `<line x1="${m.l}" x2="${m.l + w}" y1="${Y(v)}" y2="${Y(v)}" stroke="${line}" stroke-width="1"/><text x="${m.l - 8}" y="${Y(v) + 4}" text-anchor="end" font-size="12" fill="${muted}">${v}</text>`;
+  const every = xs.length > 9 || w < 260 ? 2 : 1;
+  xs.forEach((x, i) => { if (i % every === 0 || i === xs.length - 1) s += `<text x="${X(x)}" y="${m.t + h + 18}" text-anchor="middle" font-size="12" fill="${muted}">${x}</text>`; });
+  s += `<text x="${m.l + w / 2}" y="${VH - 6}" text-anchor="middle" font-size="12" fill="${muted}">${cfg.xTitle}</text>`;
+  s += `<text x="12" y="${m.t + h / 2}" text-anchor="middle" font-size="12" fill="${muted}" transform="rotate(-90 12 ${m.t + h / 2})">거리 (${cfg.unit})</text>`;
+  if (cfg.vline) s += `<line x1="${X(cfg.vline.x)}" x2="${X(cfg.vline.x)}" y1="${m.t}" y2="${m.t + h}" stroke="${muted}" stroke-dasharray="2 4"/><text x="${X(cfg.vline.x) + 6}" y="${m.t + 12}" font-size="11.5" fill="${muted}">${cfg.vline.label}</text>`;
+  (cfg.refs || []).forEach(r => { s += `<line x1="${m.l}" x2="${m.l + w}" y1="${Y(r.y)}" y2="${Y(r.y)}" stroke="${r.color || muted}" stroke-width="1.5" stroke-dasharray="4 4" opacity=".85"/>`; });
+  cfg.series.forEach(se => {
+    s += `<polyline points="${se.values.map((v, i) => `${X(xs[i])},${Y(v)}`).join(" ")}" fill="none" stroke="${se.color}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" ${se.dash ? `stroke-dasharray="${se.dash}"` : ""}/>`;
+    se.values.forEach((v, i) => { s += `<circle cx="${X(xs[i])}" cy="${Y(v)}" r="4" fill="${se.color}" stroke="${card}" stroke-width="2"/>`; });
+  });
+  // direct end labels (series + refs), nudged apart
+  const labs = cfg.series.map(se => ({ y: Y(se.values[se.values.length - 1]), text: se.name, color: ink }))
+    .concat((cfg.refs || []).map(r => ({ y: Y(r.y), text: r.label, color: muted }))).sort((a, b) => a.y - b.y);
+  for (let i = 1; i < labs.length; i++) if (labs[i].y - labs[i - 1].y < 14) labs[i].y = labs[i - 1].y + 14;
+  labs.forEach(l => { s += `<text x="${m.l + w + 8}" y="${l.y + 4}" font-size="12" fill="${l.color}" font-weight="${l.color === ink ? 700 : 400}">${l.text}</text>`; });
+  s += `<line class="xh" x1="0" x2="0" y1="${m.t}" y2="${m.t + h}" stroke="${ink}" stroke-width="1" opacity="0"/>`;
+  s += `<rect class="hit" x="${m.l}" y="${m.t}" width="${w}" height="${h}" fill="transparent"/>`;
+  svg.innerHTML = s;
+  const xh = svg.querySelector(".xh"), hit = svg.querySelector(".hit");
+  const show = e => {
+    const r = svg.getBoundingClientRect(), vx = (e.clientX - r.left) / r.width * VW;
+    let i = 0, best = Infinity; xs.forEach((x, j) => { const d = Math.abs(X(x) - vx); if (d < best) { best = d; i = j; } });
+    xh.setAttribute("x1", X(xs[i])); xh.setAttribute("x2", X(xs[i])); xh.setAttribute("opacity", ".35");
+    tip.innerHTML = `<b>${cfg.xFmt(xs[i])}</b><br>` + cfg.series.map(se => `<i style="background:${se.color}"></i>${se.name} ${se.values[i]} ${cfg.unit}`).join("<br>");
+    tip.style.opacity = 1;
+    const bx = box.getBoundingClientRect(), px = e.clientX - bx.left, py = e.clientY - bx.top;
+    const tw = tip.offsetWidth; tip.style.left = Math.max(4, Math.min(bx.width - tw - 4, px + 14 > bx.width - tw ? px - tw - 14 : px + 14)) + "px";
+    tip.style.top = Math.max(4, py - 30) + "px";
+  };
+  const hide = () => { tip.style.opacity = 0; xh.setAttribute("opacity", "0"); };
+  hit.addEventListener("pointermove", show); hit.addEventListener("pointerdown", show); hit.addEventListener("pointerleave", hide);
+}
 
 syncOutputs(); updateCompare(); updateSweep();
+setTimeout(buildResults, 60);
 </script>
 </body>
 </html>
