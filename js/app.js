@@ -358,9 +358,9 @@ function renderParamTable() {
     ["거리 지표 격자", "10 μm (200 × 200칸)", "기존 프로그램 값"],
     ["통로 굵기", `${P.chw} μm`, "기존 값 20 μm · 임의 설정값(교육용)"],
     ["농도 격자 Δx", `${P.dx} μm`, "계산 시간과 정확도의 절충 · 임의 설정값(교육용). 8번 격자 수렴 확인으로 차이를 봅니다"],
-    ["시간 간격 Δt", s ? `${s.dt.toFixed(4)} s (${s.steps}단계)` : "계산 후 표시", "안정 조건에서 자동 계산: Δt = T ÷ 단계 수 ≤ 0.9 × Δx² ÷ (4D + kΔx²)"],
+    ["시간 간격 Δt", s ? `${s.dt.toFixed(4)} s (${s.steps}단계)` : "계산 후 표시", "자동 계산: Δt = T ÷ 단계 수 ≤ 0.9 × Δx² ÷ (4D + kΔx²). 이 값은 확산 안정 조건 Δx²/(4D)와 소모 포함 안정 한계보다 작고, 농도가 음수가 되지 않게 합니다"],
     ["확산계수 D", `${P.D} μm²/s (= ${(P.D / 1e3).toFixed(1)}×10⁻⁹ m²/s)`, "기본값 2×10⁻⁹ m²/s: 세포 속 산소 확산계수 문헌값(Grimes 외, 2014를 인용한 조직 구형체 산소 확산 모델 연구, arXiv:2501.12095)"],
-    ["소모율 k", `${P.kc} /s`, `1차 소모(kC)로 단순화. 침투 길이 λ = √(D/k) = ${lam.toFixed(0)} μm. 기본값은 문헌의 확산 한계 100~200 μm의 중간(150 μm)에 맞춰 역산한 교육용 설정값`],
+    ["소모율 k", `${P.kc} /s`, `1차 소모(kC)로 단순화. 침투 길이 λ = √(D/k) = ${lam.toFixed(0)} μm. 기본값은 λ를 문헌의 산소 확산 한계 100~200 μm의 중간인 150 μm로 두고 역산한 교육용 설정값. 확산 한계(산소가 거의 닿지 않는 거리)와 λ(농도가 공급 농도의 약 37%로 줄어드는 거리)는 같은 양이 아니므로, 이것은 단순화한 가정입니다`],
     ["공급 농도 C₀", "1 (상대 농도)", "정규화 · 임의 설정값(교육용)"],
     ["초기 농도", "0", "조직에 물질이 없는 상태에서 시작한다고 가정"],
     ["목표 농도", `${P.Ct} C₀`, "임의 설정값(교육용)"],
@@ -583,8 +583,9 @@ function updateVerifyFromSim() {
   $("vStab").innerHTML = `<thead><tr><th>항목</th><th>값</th><th>결과</th></tr></thead><tbody>
     <tr><td>사용한 Δt</td><td>${s.dt.toFixed(5)} s</td><td></td></tr>
     <tr><td>확산 안정 조건 Δx²/(4D)</td><td>${pure.toFixed(5)} s</td><td>${s.dt <= pure ? "Δt ≤ 한계 ✓" : "<b class='warn'>초과</b>"}</td></tr>
-    <tr><td>소모 포함 조건 Δx²/(4D + kΔx²)</td><td>${s.dtStab.toFixed(5)} s</td><td>${s.dt <= s.dtStab ? "Δt ≤ 한계 ✓" : "<b class='warn'>초과</b>"}</td></tr>
-    <tr><td>1 − 4r − kΔt (0 이상이어야 함)</td><td>${(1 - 4 * s.r - s.kd).toFixed(4)}</td><td>${1 - 4 * s.r - s.kd >= 0 ? "✓" : "<b class='warn'>불안정</b>"}</td></tr></tbody>`;
+    <tr><td>소모 포함 안정 한계(폰 노이만) Δx²/(4D + kΔx²/2)</td><td>${(s.dx * s.dx / (4 * P.D + P.kc * s.dx * s.dx / 2)).toFixed(5)} s</td><td>${s.dt <= s.dx * s.dx / (4 * P.D + P.kc * s.dx * s.dx / 2) ? "Δt ≤ 한계 ✓" : "<b class='warn'>초과</b>"}</td></tr>
+    <tr><td>음수가 생기지 않는 조건 Δx²/(4D + kΔx²) (더 엄격, 이 조건으로 Δt를 정함)</td><td>${s.dtStab.toFixed(5)} s</td><td>${s.dt <= s.dtStab ? "Δt ≤ 한계 ✓" : "<b class='warn'>초과</b>"}</td></tr>
+    <tr><td>1 − 4r − kΔt (0 이상이면 새 농도가 이전 농도들을 음수 아닌 가중치로 더한 값이 되어 음수·진동이 생기지 않음)</td><td>${(1 - 4 * s.r - s.kd).toFixed(4)}</td><td>${1 - 4 * s.r - s.kd >= 0 ? "✓" : "<b class='warn'>불안정</b>"}</td></tr></tbody>`;
   const mrow = (name, x) => `<tr><td>${name}</td><td>${x.supply.toFixed(2)}</td><td>${x.consumed.toFixed(2)}</td><td>${(x.M1 - x.M0).toFixed(2)}</td><td>${x.err.toExponential(2)}</td><td>${x.err < 1e-8 ? "보존 ✓" : "<b class='warn'>오차 큼</b>"}</td></tr>`;
   $("vMass").innerHTML = `<thead><tr><th>구조</th><th>들어온 양</th><th>소모된 양</th><th>조직 속 변화량</th><th>상대 오차</th><th>결과</th></tr></thead><tbody>${mrow("A 직선형", simData.sA.mass)}${mrow("B 잎맥형", simData.sB.mass)}</tbody>
     <caption class="note" style="caption-side:bottom;text-align:left;padding-top:6px">단위: 칸 수 × 상대 농도. 상대 오차 = |변화량 − (들어온 양 − 소모된 양)| ÷ 들어온 양</caption>`;
@@ -660,7 +661,7 @@ function syncOutputs() {
   $("CtOut").textContent = `${state.Ct.toFixed(2)} C₀`;
   $("critOut").textContent = `조직의 ${state.crit}%`;
   $("TOut").textContent = `${state.T} s`;
-  $("lamNote").textContent = `1차 소모(kC). 침투 길이 λ = √(D/k) = ${Math.sqrt(state.D / state.kc).toFixed(0)} μm. 기본값 0.089 /s는 λ = 150 μm(문헌 확산 한계 100~200 μm의 중간)가 되도록 역산한 교육용 설정값`;
+  $("lamNote").textContent = `1차 소모(kC). 침투 길이 λ = √(D/k) = ${Math.sqrt(state.D / state.kc).toFixed(0)} μm. 기본값 0.089 /s는 λ를 문헌의 산소 확산 한계 100~200 μm의 중간(150 μm)으로 둔 교육용 설정값(λ는 농도가 약 37%로 줄어드는 거리로, 확산 한계와 같은 양은 아님)`;
   $("TNote").textContent = `1/k ≈ ${(1 / state.kc).toFixed(1)} s의 약 ${(state.T * state.kc).toFixed(1)}배. 기본 60 s ≈ 5/k (정상 상태에 가까워지는 시간)`;
   $("LsBox").hidden = state.model !== "B";
   $("modelNote").textContent = state.model === "A" ? "통로 안 모든 칸이 공급 농도 C₀를 유지한다고 가정합니다." : "통로 안 농도 = C₀ × exp(−s ÷ Lₛ). 입구에서 통로를 따라 멀어질수록 줄어든다고 가정한 식입니다(유량·대류는 계산하지 않음).";

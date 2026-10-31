@@ -80,7 +80,7 @@ function leafRaw(k, angleDeg, tert, f) {
 function leafGeom(P) {
   const Lt = P.L * 1000, tot = (k, f) => totalLen(leafRaw(k, P.angle, P.tert, f));
   let k, fmax, warn = null, f;
-  if (P.pairs === "auto") { k = 1; while (k < 60 && tot(k, 1) < Lt) k++; fmax = 1; }   // 기존 방식: 측맥이 가장자리에 닿는 최소 쌍 수
+  if (P.pairs === "auto") { k = 1; while (k < 60 && tot(k, 1) < Lt) k++; fmax = 1; }   // 기존 방식: 측맥이 가장자리까지 닿는다고 할 때(f=1) 총길이를 채우는 최소 쌍 수
   else { k = +P.pairs; fmax = 4; }
   if (tot(k, fmax) < Lt) { f = fmax; warn = "잎맥형이 조직 밖으로 잘려 목표 총길이에 도달하지 못했습니다"; }
   else if (tot(k, 0.01) > Lt) { f = 0.01; warn = "총길이가 너무 짧아 잎맥형을 만들 수 없습니다"; }
