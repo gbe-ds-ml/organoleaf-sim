@@ -12,6 +12,7 @@
 | `css/style.css` | 디자인(색, 배치, 다크 모드) |
 | `js/core.js` | 계산 모델: 구조 생성, 거리 계산, 농도 확산, 지표, 판정, 검증 (화면 코드 없음) |
 | `js/worker.js` | 자동 탐색 등 오래 걸리는 계산을 백그라운드에서 돌리는 Web Worker (`core.js`를 불러옴) |
+| `js/leafwater.js` | 10번 잎 모양 물 확산 모델(팀 시뮬레이터) |
 | `js/app.js` | 화면 동작: 조절 막대, 지도·그래프 그리기, 비교표, 탐색 결과 해석, 이전 분석 기록 |
 
 계산식을 고치려면 `js/core.js`만 고치면 됩니다. 화면과 Worker가 같은 파일을 쓰므로 두 곳의 계산이 항상 같습니다.
@@ -32,6 +33,7 @@
 6. **자동 조건 탐색**: 한 변수씩 전체 탐색(9개 변수, 40개 조건) 또는 두 변수 히트맵. Web Worker로 계산, 진행률 표시, 결과 해석 자동 생성(계산 결과 / 가정 / 추정 구분), CSV 내려받기.
 7. **검증**: 거리 손계산 비교, 정상 상태 해석해 비교, 안정 조건, 물질 보존, 재현성, 격자 수렴(40·20·10 μm).
 8. **직접 그리기**, **이전 분석 기록(거리 지표, 2026. 10. 29.)**.
+9. **잎 모양 물 확산 모델(10번 섹션)**: 팀이 만든 '잎맥 물 확산 시뮬레이터'를 계산식 변경 없이 옮김(원래 코드와 결과 일치 확인). 맥 총길이·맥 부피 지표, 조직 퍼짐 시간 식 선택(거리 비례 / 거리² 비례), 검토 의견 추가. 1~8번과는 다른 도달 시간 모델이므로 숫자를 바로 비교하지 않음.
 
 ## 주요 기본값과 근거
 
@@ -61,6 +63,8 @@
 
 ## 참고문헌
 
+- Carmeliet, P., & Jain, R. K. (2000). Angiogenesis in cancer and other diseases. *Nature*, 407, 249–257 — 산소 확산 한계 100~200 μm.
+- McCulloh, K. A., Sperry, J. S., & Adler, F. R. (2003). Water transport in plants obeys Murray's law. *Nature*, 421, 939–942.
 - Nwokoye, N. P., & Abilez, O. J. (2024). Bioengineering methods for vascularizing organoids. *Cell Reports Methods*, 100779.
 - Gershlak, J. R., et al. (2017). Crossing kingdoms: Using decellularized plants as perfusable tissue engineering scaffolds. *Biomaterials*. PMID 28222326.
 - Numerical modeling of oxygen diffusion in tissue spheroids undergoing fusion using function representation and finite volumes (arXiv:2501.12095) — 산소 확산계수 2×10⁻⁹ m²/s (Grimes, Fletcher & Partridge, 2014 인용).
