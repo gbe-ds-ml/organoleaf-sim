@@ -166,3 +166,11 @@ table.heat.grid th{text-align:center;font-weight:500;font-size:.8rem;color:var(-
 .vgrid td:first-child{white-space:nowrap}
 .vgrid h4{margin:0 0 4px}
 .vgrid table{font-size:.85rem}
+
+/* ---- 10. 잎 모양 물 확산 모델 ---- */
+.lw{--lw-leaf:#c5e0ae;--lw-vein:#3b6a33;--lw-flow:#1976d2}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .lw{--lw-leaf:#46703b;--lw-vein:#a9cf98;--lw-flow:#5ab8ff}}
+:root[data-theme="dark"] .lw{--lw-leaf:#46703b;--lw-vein:#a9cf98;--lw-flow:#5ab8ff}
+.lwcv{width:100%;display:block;background:var(--bg);border-radius:8px}
+.lwr{font-size:.9rem;margin-top:8px;line-height:1.6}.lwr b{font-size:1.05rem}
+.lwbar{height:6px;background:var(--line);border-radius:3px;margin:3px 0 6px}.lwbar i{display:block;height:100%;width:0;background:var(--lw-flow);border-radius:3px}
